@@ -84,35 +84,35 @@ function GameStatus({ squares, xIsNext }: GameStatusProps): JSX.Element {
   );
 }
 
-function Moves({ history, ascending, jumpTo }: MovesProps): JSX.Element {
-  const arr = history.map((_, move) => {
-    let description;
-
-    if (move > 0) {
-      if (move === history.length - 1) {
-        return "You are at move #" + move;
+function PlayHistory({ history, ascending, jumpTo }: MovesProps): JSX.Element {
+  const createPlayHistory = history.map((_, i) => {
+    const description: () => string = () => {
+      if (i > 0) {
+        if (i === history.length - 1) {
+          return "You are at move #" + i;
+        }
+        return "Go to move #" + i;
+      } else {
+        return "Go to game start";
       }
-      description = "Go to move #" + move;
-    } else {
-      description = "Go to game start";
-    }
+    };
 
     return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
+      <li key={i}>
+        <button onClick={() => jumpTo(i)}>{description()}</button>
       </li>
     );
   });
 
-  const moves = arr.map((element, i) => {
+  const playHistory = createPlayHistory.map((element, i) => {
     if (ascending) {
       return element;
     } else {
-      return arr[arr.length - 1 - i];
+      return createPlayHistory[createPlayHistory.length - 1 - i];
     }
   });
 
-  return <ul>{moves}</ul>;
+  return <ul>{playHistory}</ul>;
 }
 
 function Order({ order, ascending, setAscending, setOrder }: OrderProps) {
@@ -171,7 +171,11 @@ export default function Game(): JSX.Element {
           setOrder={setOrder}
           setAscending={setAscending}
         />
-        <Moves history={history} ascending={ascending} jumpTo={handleMove} />
+        <PlayHistory
+          history={history}
+          ascending={ascending}
+          jumpTo={handleMove}
+        />
       </div>
     </div>
   );
