@@ -32,9 +32,11 @@ function Board({ xIsNext, squares, onPlay }: BoardProps): JSX.Element {
     onPlay(nextSquares);
   }
 
+  const arr = Array.from({ length: 3 });
+
   return (
     <>
-      {Array.from({ length: 3 }).map((_, i) => (
+      {arr.map((_, i) => (
         <div key={i} className="board-row">
           {squares[i].map((square, j) => {
             const keyIndex = j + i * 3;
