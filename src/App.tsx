@@ -16,10 +16,10 @@ function Square({ value, onSquareClick, style }: SquareProps): JSX.Element {
 }
 
 function Board({ xIsNext, squares, onPlay }: BoardProps): JSX.Element {
-  const winner: number[][] | null = calculateWinner(squares);
+  const existWinner: number[][] | null = calculateWinner(squares);
 
   function handleClick(i: number, j: number): void {
-    if (squares[i][j] || winner) {
+    if (squares[i][j] || existWinner) {
       return;
     }
     const nextSquares = squares.map((square) => square.slice());
@@ -39,9 +39,12 @@ function Board({ xIsNext, squares, onPlay }: BoardProps): JSX.Element {
         <div key={i} className="board-row">
           {squares[i].map((square, j) => {
             const keyIndex = j + i * 3;
-            const isWinner =
-              winner && winner.some((elem) => elem[0] === i && elem[1] === j);
-            const squareStyle = isWinner ? { backgroundColor: "pink" } : {};
+            const isWinnersSquare =
+              existWinner &&
+              existWinner.some((elem) => elem[0] === i && elem[1] === j);
+            const squareStyle = isWinnersSquare
+              ? { backgroundColor: "pink" }
+              : {};
 
             return (
               <Square
@@ -59,10 +62,10 @@ function Board({ xIsNext, squares, onPlay }: BoardProps): JSX.Element {
 }
 
 function GameStatus({ squares, xIsNext }: GameStatusProps): JSX.Element {
-  const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = "Winner: " + squares[winner[0][0]][winner[0][1]];
+  const existWinner = calculateWinner(squares);
+  let gameStatus;
+  if (existWinner) {
+    gameStatus = "Winner: " + squares[existWinner[0][0]][existWinner[0][1]];
   } else {
     const squaresLength = squares.reduce((total, row) => {
       return (
@@ -73,15 +76,15 @@ function GameStatus({ squares, xIsNext }: GameStatusProps): JSX.Element {
       );
     }, 0);
     if (squaresLength > 0) {
-      status = "Next player: " + (xIsNext ? "X" : "O");
+      gameStatus = "Next player: " + (xIsNext ? "X" : "O");
     } else {
-      status = "No Winner, No Loser";
+      gameStatus = "No Winner, No Loser";
     }
   }
 
   return (
     <>
-      <div className="status">{status}</div>
+      <div className="gameStatus">{gameStatus}</div>
     </>
   );
 }
