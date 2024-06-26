@@ -63,28 +63,23 @@ function Board({ xIsNext, squares, onPlay }: BoardProps): JSX.Element {
 
 function GameStatus({ squares, xIsNext }: GameStatusProps): JSX.Element {
   const existWinner = calculateWinner(squares);
-  let gameStatus;
-  if (existWinner) {
-    gameStatus = "Winner: " + squares[existWinner[0][0]][existWinner[0][1]];
-  } else {
-    const squaresLength = squares.reduce((total, row) => {
-      return (
-        total +
-        row.reduce((rowTotal, item) => {
-          return rowTotal + (item === null ? 1 : 0);
-        }, 0)
-      );
-    }, 0);
-    if (squaresLength > 0) {
-      gameStatus = "Next player: " + (xIsNext ? "X" : "O");
+
+  const gameStatus: () => string = () => {
+    if (existWinner) {
+      return "Winner: " + squares[existWinner[0][0]][existWinner[0][1]];
     } else {
-      gameStatus = "No Winner, No Loser";
+      const isSquaresFilled = calculateSquaresFilled(squares);
+      if (isSquaresFilled) {
+        return "Next player: " + (xIsNext ? "X" : "O");
+      } else {
+        return "No Winner, No Loser";
+      }
     }
-  }
+  };
 
   return (
     <>
-      <div className="gameStatus">{gameStatus}</div>
+      <div className="gameStatus">{gameStatus()}</div>
     </>
   );
 }
@@ -236,4 +231,18 @@ function calculateWinner(squares: string[][]): number[][] | null {
     }
   }
   return null;
+}
+
+function calculateSquaresFilled(squares: string[][]): boolean {
+  const squaresLength = squares.reduce((total, row) => {
+    console.log(squares);
+    return (
+      total +
+      row.reduce((rowTotal, item) => {
+        return rowTotal + (item === null ? 1 : 0);
+      }, 0)
+    );
+  }, 0);
+
+  return squaresLength ? true : false;
 }
