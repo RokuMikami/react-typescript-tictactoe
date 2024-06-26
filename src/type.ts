@@ -15,6 +15,7 @@ export interface BoardProps extends GameStatusProps {
 
 export interface MovesProps {
   history: string[][][];
+  ascending: boolean;
   jumpTo: (move: number) => void;
 }
 
