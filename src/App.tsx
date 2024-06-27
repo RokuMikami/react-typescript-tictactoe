@@ -63,23 +63,26 @@ function Board({ xIsNext, board, onPlay }: BoardProps): JSX.Element {
 
 function GameStatus({ board, xIsNext }: GameStatusProps): JSX.Element {
   const existWinner = calculateWinner(board);
+  const [gameStatus, setGameStatus] = useState<string>("");
 
-  const gameStatus: () => string = () => {
+  useEffect(() => {
+    let newGameStatus;
     if (existWinner) {
-      return "Winner: " + board[existWinner[0][0]][existWinner[0][1]];
+      newGameStatus = "Winner: " + board[existWinner[0][0]][existWinner[0][1]];
     } else {
       const isNullSquareExist = checkNullSquareExist(board);
       if (isNullSquareExist) {
-        return "Next player: " + (xIsNext ? "X" : "O");
+        newGameStatus = "Next player: " + (xIsNext ? "X" : "O");
       } else {
-        return "No Winner, No Loser";
+        newGameStatus = "No Winner, No Loser";
       }
     }
-  };
+    setGameStatus(newGameStatus);
+  }, [board, xIsNext]);
 
   return (
     <>
-      <div className="gameStatus">{gameStatus()}</div>
+      <div className="gameStatus">{gameStatus}</div>
     </>
   );
 }
