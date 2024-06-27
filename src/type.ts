@@ -5,23 +5,22 @@ export interface SquareProps {
 }
 
 export interface GameStatusProps {
-  squares: string[][];
+  board: string[][];
   xIsNext: boolean;
 }
 
 export interface BoardProps extends GameStatusProps {
-  onPlay: (squares: string[][]) => void;
+  onPlay: (board: string[][]) => void;
 }
 
-export interface MovesProps {
+export interface PlayHistoryProps {
   history: string[][][];
-  ascending: boolean;
   jumpTo: (move: number) => void;
 }
 
-export interface OrderProps {
-  order: string;
+export interface ToggleOrderProps {
   ascending: boolean;
-  setAscending: (bool: boolean) => void;
-  setOrder: (str: string) => void;
+  setAscending: React.Dispatch<React.SetStateAction<boolean>>;
+  playHistory: JSX.Element[];
+  setPlayHistory: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
 }

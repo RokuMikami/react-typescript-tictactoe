@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   SquareProps,
   BoardProps,
   GameStatusProps,
-  MovesProps,
-  OrderProps,
+  PlayHistoryProps,
+  ToggleOrderProps,
 } from "./type";
 
 function Square({ value, onSquareClick, style }: SquareProps): JSX.Element {
@@ -15,29 +15,29 @@ function Square({ value, onSquareClick, style }: SquareProps): JSX.Element {
   );
 }
 
-function Board({ xIsNext, squares, onPlay }: BoardProps): JSX.Element {
-  const existWinner: number[][] | null = calculateWinner(squares);
+function Board({ xIsNext, board, onPlay }: BoardProps): JSX.Element {
+  const existWinner: number[][] | null = calculateWinner(board);
 
   function handleClick(i: number, j: number): void {
-    if (squares[i][j] || existWinner) {
+    if (board[i][j] || existWinner) {
       return;
     }
-    const nextSquares = squares.map((square) => square.slice());
+    const newBoard = board.map((row) => row.slice());
     if (xIsNext) {
-      nextSquares[i][j] = "X";
+      newBoard[i][j] = "X";
     } else {
-      nextSquares[i][j] = "O";
+      newBoard[i][j] = "O";
     }
-    onPlay(nextSquares);
+    onPlay(newBoard);
   }
 
-  const arr = Array.from({ length: 3 });
+  const boardRows = Array.from({ length: 3 });
 
   return (
     <>
-      {arr.map((_, i) => (
+      {boardRows.map((_, i) => (
         <div key={i} className="board-row">
-          {squares[i].map((square, j) => {
+          {board[i].map((square, j) => {
             const keyIndex = j + i * 3;
             const isWinnersSquare =
               existWinner &&
@@ -61,15 +61,15 @@ function Board({ xIsNext, squares, onPlay }: BoardProps): JSX.Element {
   );
 }
 
-function GameStatus({ squares, xIsNext }: GameStatusProps): JSX.Element {
-  const existWinner = calculateWinner(squares);
+function GameStatus({ board, xIsNext }: GameStatusProps): JSX.Element {
+  const existWinner = calculateWinner(board);
 
   const gameStatus: () => string = () => {
     if (existWinner) {
-      return "Winner: " + squares[existWinner[0][0]][existWinner[0][1]];
+      return "Winner: " + board[existWinner[0][0]][existWinner[0][1]];
     } else {
-      const isSquaresFilled = calculateSquaresFilled(squares);
-      if (isSquaresFilled) {
+      const isNullSquareExist = checkNullSquareExist(board);
+      if (isNullSquareExist) {
         return "Next player: " + (xIsNext ? "X" : "O");
       } else {
         return "No Winner, No Loser";
@@ -84,38 +84,56 @@ function GameStatus({ squares, xIsNext }: GameStatusProps): JSX.Element {
   );
 }
 
-function PlayHistory({ history, ascending, jumpTo }: MovesProps): JSX.Element {
-  const createPlayHistory = history.map((_, i) => {
-    const description: () => string = () => {
-      if (i > 0) {
-        if (i === history.length - 1) {
-          return "You are at move #" + i;
-        }
-        return "Go to move #" + i;
+function PlayHistory({ history, jumpTo }: PlayHistoryProps): JSX.Element {
+  const [playHistory, setPlayHistory] = useState<JSX.Element[]>([]);
+  const [ascending, setAscending] = useState<boolean>(true);
+
+  useEffect(() => {
+    const newPlayHistory = history.map((_, i) => {
+      let description;
+      if (i === 0) {
+        description = "Go to game start";
+      } else if (i === history.length - 1) {
+        return <p>▶︎You're at move #{i}</p>;
       } else {
-        return "Go to game start";
+        description = "Go to move #" + i;
       }
-    };
 
-    return (
-      <li key={i}>
-        <button onClick={() => jumpTo(i)}>{description()}</button>
-      </li>
-    );
-  });
+      return (
+        <li key={i}>
+          <button onClick={() => jumpTo(i)}>{description}</button>
+        </li>
+      );
+    });
 
-  const playHistory = createPlayHistory.map((element, i) => {
     if (ascending) {
-      return element;
+      setPlayHistory(newPlayHistory);
     } else {
-      return createPlayHistory[createPlayHistory.length - 1 - i];
+      setPlayHistory(newPlayHistory.reverse());
     }
-  });
+  }, [history, jumpTo]);
 
-  return <ul>{playHistory}</ul>;
+  return (
+    <>
+      <ToggleOrder
+        ascending={ascending}
+        setAscending={setAscending}
+        playHistory={playHistory}
+        setPlayHistory={setPlayHistory}
+      />
+      <ul>{playHistory}</ul>
+    </>
+  );
 }
 
-function Order({ order, ascending, setAscending, setOrder }: OrderProps) {
+function ToggleOrder({
+  ascending,
+  setAscending,
+  playHistory,
+  setPlayHistory,
+}: ToggleOrderProps) {
+  const [order, setOrder] = useState<string>("手順:昇順");
+
   function handleOrder(): void {
     const newOrder = !ascending;
     setAscending(newOrder);
@@ -125,63 +143,54 @@ function Order({ order, ascending, setAscending, setOrder }: OrderProps) {
     } else {
       setOrder("手順:降順");
     }
+
+    const newPlayHistory = playHistory.slice().reverse();
+    setPlayHistory(newPlayHistory);
   }
-  return <button onClick={handleOrder}>{order}</button>;
-}
 
-function useMove(init: number): [number, (nextMove: number) => void] {
-  const [currentMove, setCurrentMove] = useState<number>(init);
-
-  const handleMove = (nextMove: number) => {
-    setCurrentMove(nextMove);
-  };
-
-  return [currentMove, handleMove];
+  return <button onClick={() => handleOrder()}>{order}</button>;
 }
 
 export default function Game(): JSX.Element {
-  const [history, setHistory] = useState<string[][][]>([
+  const [playHistory, setPlayHistory] = useState<string[][][]>([
     Array.from({ length: 3 }, () => Array(3).fill(null)),
   ]);
-  const [currentMove, handleMove] = useMove(0);
-  const xIsNext: boolean = currentMove % 2 === 0;
-  const currentSquares: string[][] = history[currentMove];
-  const [ascending, setAscending] = useState<boolean>(true);
-  const [order, setOrder] = useState<string>("手順:昇順");
+  const [currentPlayHistoryIndex, setCurrentPlayHistoryIndex] =
+    useState<number>(0);
 
-  function handlePlay(nextSquares: string[][]): void {
-    const nextHistory: string[][][] = [
-      ...history.slice(0, currentMove + 1),
-      nextSquares,
+  const xIsNext: boolean = currentPlayHistoryIndex % 2 === 0;
+  const currentBoard: string[][] = playHistory[currentPlayHistoryIndex];
+
+  function handlePlayHistory(latestBoard: string[][]): void {
+    const newPlayHistory: string[][][] = [
+      ...playHistory.slice(0, currentPlayHistoryIndex + 1),
+      latestBoard,
     ];
-    setHistory(nextHistory);
-    handleMove(nextHistory.length - 1);
+    setPlayHistory(newPlayHistory);
+    setCurrentPlayHistoryIndex(newPlayHistory.length - 1);
   }
 
   return (
     <div className="game">
       <div className="game-board">
-        <GameStatus squares={currentSquares} xIsNext={xIsNext} />
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        <GameStatus board={currentBoard} xIsNext={xIsNext} />
+        <Board
+          xIsNext={xIsNext}
+          board={currentBoard}
+          onPlay={handlePlayHistory}
+        />
       </div>
       <div className="game-info">
-        <Order
-          order={order}
-          ascending={ascending}
-          setOrder={setOrder}
-          setAscending={setAscending}
-        />
         <PlayHistory
-          history={history}
-          ascending={ascending}
-          jumpTo={handleMove}
+          history={playHistory}
+          jumpTo={setCurrentPlayHistoryIndex}
         />
       </div>
     </div>
   );
 }
 
-function calculateWinner(squares: string[][]): number[][] | null {
+function calculateWinner(board: string[][]): number[][] | null {
   const lines = [
     [
       [0, 0],
@@ -227,9 +236,9 @@ function calculateWinner(squares: string[][]): number[][] | null {
   for (let i = 0; i < lines.length; i++) {
     const [[a, x], [b, y], [c, z]] = lines[i];
     if (
-      squares[a][x] &&
-      squares[a][x] === squares[b][y] &&
-      squares[a][x] === squares[c][z]
+      board[a][x] &&
+      board[a][x] === board[b][y] &&
+      board[a][x] === board[c][z]
     ) {
       return lines[i];
     }
@@ -237,16 +246,15 @@ function calculateWinner(squares: string[][]): number[][] | null {
   return null;
 }
 
-function calculateSquaresFilled(squares: string[][]): boolean {
-  const squaresLength = squares.reduce((total, row) => {
-    console.log(squares);
-    return (
-      total +
-      row.reduce((rowTotal, item) => {
-        return rowTotal + (item === null ? 1 : 0);
-      }, 0)
-    );
-  }, 0);
+function checkNullSquareExist(Board: string[][]): boolean {
+  let isNullSquareExist = false;
+  Board.forEach((nthRow) => {
+    nthRow.forEach((nthSquare) => {
+      if (!nthSquare) {
+        isNullSquareExist = true;
+      }
+    });
+  });
 
-  return squaresLength ? true : false;
+  return isNullSquareExist;
 }
