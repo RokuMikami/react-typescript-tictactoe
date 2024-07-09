@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  SquareProps,
   BoardProps,
   GameStatusProps,
   PlayHistoryProps,
   ToggleOrderProps,
 } from "./type";
 
-function Square({ value, onSquareClick, style }: SquareProps): JSX.Element {
-  return (
-    <button className="square" onClick={onSquareClick} style={style}>
-      {value}
-    </button>
-  );
-}
+import { Square } from "./Game/Board/Square/components/App";
 
 function Board({ xIsNext, board, onPlay }: BoardProps): JSX.Element {
   const existWinner: number[][] | null = calculateWinner(board);
