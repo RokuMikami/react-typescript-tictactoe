@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { GameStatusProps } from "../../../type";
 import { calculateWinner } from "../../models/model";
+import { checkNullSquareExist } from "../models/model";
 
 export function GameStatus({ board, xIsNext }: GameStatusProps): JSX.Element {
   const existWinner = calculateWinner(board);
@@ -28,17 +29,4 @@ export function GameStatus({ board, xIsNext }: GameStatusProps): JSX.Element {
       <div className="gameStatus">{gameStatus}</div>
     </>
   );
-}
-
-function checkNullSquareExist(Board: string[][]): boolean {
-  let isNullSquareExist = false;
-  Board.forEach((nthRow) => {
-    nthRow.forEach((nthSquare) => {
-      if (!nthSquare) {
-        isNullSquareExist = true;
-      }
-    });
-  });
-
-  return isNullSquareExist;
 }
