@@ -1,4 +1,4 @@
-import { BoardProps } from "../../../types";
+import { BoardProps } from "../../types/type";
 import { Square } from "../Square/components/App";
 import { calculateWinner } from "../../models/model";
 

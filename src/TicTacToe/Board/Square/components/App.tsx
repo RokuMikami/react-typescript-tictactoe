@@ -1,4 +1,4 @@
-import { SquareProps } from "../../../../types";
+import { SquareProps } from "../../../types/type";
 
 export function Square({
   value,

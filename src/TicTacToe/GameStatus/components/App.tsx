@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { GameStatusProps } from "../../../types";
+import { GameStatusProps } from "../../types/type";
 import { calculateWinner } from "../../models/model";
 import { checkNullSquareExist } from "../models/model";
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ToggleOrderProps } from "../../../../types";
+import { ToggleOrderProps } from "../../../types/type";
 
 export function ToggleOrder({
   ascending,

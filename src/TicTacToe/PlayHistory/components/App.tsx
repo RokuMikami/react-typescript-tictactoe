@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { PlayHistoryProps } from "../../../types";
+import { PlayHistoryProps } from "../../types/type";
 import { ToggleOrder } from "../ToggleOrder/components/App";
 
 export function PlayHistory({
