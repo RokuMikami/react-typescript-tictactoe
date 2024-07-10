@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Board } from "../Board/components/App";
-import { GameStatus } from "../GameStatus/components/App";
-import { PlayHistory } from "../PlayHistory/components/App";
+import { Board } from "./components/Board";
+import { GameStatus } from "./components/GameStatus";
+import { PlayHistory } from "./components/PlayHistory";
 
 export default function Game(): JSX.Element {
   const [playHistory, setPlayHistory] = useState<string[][][]>([

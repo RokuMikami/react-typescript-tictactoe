@@ -1,6 +1,6 @@
-import { BoardProps } from "../../types/type";
-import { Square } from "../Square/components/App";
-import { calculateWinner } from "../../models/model";
+import { BoardProps } from "../type";
+import { Square } from "./components/square";
+import { calculateWinner } from "../model";
 
 export function Board({ xIsNext, board, onPlay }: BoardProps): JSX.Element {
   const existWinner: number[][] | null = calculateWinner(board);
