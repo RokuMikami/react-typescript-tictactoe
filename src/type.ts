@@ -9,14 +9,16 @@ export interface GameStatusProps {
   xIsNext: boolean;
 }
 
+export type BoardType = string[][];
+
 export interface BoardProps extends GameStatusProps {
   onPlay: (board: string[][]) => void;
 }
 
-export type playHistory = string[][][];
+export type History = string[][][];
 
 export interface PlayHistoryProps {
-  history: playHistory;
+  history: History;
   jumpTo: (move: number) => void;
 }
 

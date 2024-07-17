@@ -2,20 +2,20 @@ import { useState } from "react";
 import { Board } from "./components/Board";
 import { GameStatus } from "./components/GameStatus";
 import { PlayHistory } from "./components/PlayHistory";
-import type { playHistory } from "./type";
+import type { History, BoardType } from "./type";
 
 export default function Game(): JSX.Element {
-  const [playHistory, setPlayHistory] = useState<playHistory>([
+  const [playHistory, setPlayHistory] = useState<History>([
     Array.from({ length: 3 }, () => Array(3).fill(null)),
   ]);
   const [currentPlayHistoryIndex, setCurrentPlayHistoryIndex] =
     useState<number>(0);
 
   const xIsNext: boolean = currentPlayHistoryIndex % 2 === 0;
-  const currentBoard: string[][] = playHistory[currentPlayHistoryIndex];
+  const currentBoard: BoardType = playHistory[currentPlayHistoryIndex];
 
-  function handlePlayHistory(latestBoard: string[][]): void {
-    const newPlayHistory: string[][][] = [
+  function handlePlayHistory(latestBoard: BoardType): void {
+    const newPlayHistory: History = [
       ...playHistory.slice(0, currentPlayHistoryIndex + 1),
       latestBoard,
     ];
