@@ -21,7 +21,7 @@ export function GameStatus({ board, xIsNext }: GameStatusProps): JSX.Element {
       }
     };
 
-    setGameStatus(newGameStatus);
+    setGameStatus(newGameStatus());
   }, [board, xIsNext]);
 
   return (
