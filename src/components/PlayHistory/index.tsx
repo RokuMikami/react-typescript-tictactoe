@@ -32,12 +32,7 @@ export function PlayHistory({
 
   return (
     <>
-      <ToggleOrder
-        ascending={ascending}
-        setAscending={setAscending}
-        playHistory={playHistory}
-        setPlayHistory={setPlayHistory}
-      />
+      <ToggleOrder ascending={ascending} setAscending={setAscending} />
       <ul>{playHistory}</ul>
     </>
   );

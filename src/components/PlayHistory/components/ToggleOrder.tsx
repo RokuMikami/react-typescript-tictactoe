@@ -3,11 +3,9 @@ import { ToggleOrderProps } from "../../../type";
 export function ToggleOrder({
   ascending,
   setAscending,
-  setPlayHistory,
 }: ToggleOrderProps) {
   function handleOrder(): void {
     setAscending((prevAscending) => !prevAscending);
-    setPlayHistory((prevPlayHistory) => prevPlayHistory.slice().reverse());
   }
 
   return (
