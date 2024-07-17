@@ -17,12 +17,10 @@ export function Board({ xIsNext, board, onPlay }: BoardProps): JSX.Element {
     }
     onPlay(newBoard);
   }
-
-  const boardRows = Array.from({ length: 3 });
-
+  
   return (
     <>
-      {boardRows.map((_, i) => (
+      {board.map((_, i) => (
         <div key={i} className="board-row">
           {board[i].map((square, j) => {
             const keyIndex = j + i * 3;
