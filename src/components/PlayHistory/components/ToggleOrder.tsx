@@ -23,5 +23,5 @@ export function ToggleOrder({
     setPlayHistory(newPlayHistory);
   }
 
-  return <button onClick={() => handleOrder()}>{order}</button>;
+  return <button onClick={handleOrder}>{order}</button>;
 }
