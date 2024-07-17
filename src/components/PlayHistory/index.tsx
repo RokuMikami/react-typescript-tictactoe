@@ -27,12 +27,8 @@ export function PlayHistory({
       );
     });
 
-    if (ascending) {
-      setPlayHistory(newPlayHistory);
-    } else {
-      setPlayHistory(newPlayHistory.reverse());
-    }
-  }, [history, jumpTo]);
+    setPlayHistory(ascending ? newPlayHistory : newPlayHistory.reverse());
+  }, [history, jumpTo, ascending]);
 
   return (
     <>
