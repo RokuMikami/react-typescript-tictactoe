@@ -22,7 +22,7 @@ export function GameStatus({ board, xIsNext }: GameStatusProps): JSX.Element {
     };
 
     setGameStatus(newGameStatus());
-  }, [board, xIsNext]);
+  }, [board, xIsNext, existWinner]);
 
   return (
     <>
