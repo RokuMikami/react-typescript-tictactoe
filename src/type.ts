@@ -13,8 +13,10 @@ export interface BoardProps extends GameStatusProps {
   onPlay: (board: string[][]) => void;
 }
 
+export type playHistory = string[][][];
+
 export interface PlayHistoryProps {
-  history: string[][][];
+  history: playHistory;
   jumpTo: (move: number) => void;
 }
 

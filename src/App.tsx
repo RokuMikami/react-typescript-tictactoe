@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Board } from "./components/Board";
 import { GameStatus } from "./components/GameStatus";
 import { PlayHistory } from "./components/PlayHistory";
+import type { playHistory } from "./type";
 
 export default function Game(): JSX.Element {
-  const [playHistory, setPlayHistory] = useState<string[][][]>([
+  const [playHistory, setPlayHistory] = useState<playHistory>([
     Array.from({ length: 3 }, () => Array(3).fill(null)),
   ]);
   const [currentPlayHistoryIndex, setCurrentPlayHistoryIndex] =
