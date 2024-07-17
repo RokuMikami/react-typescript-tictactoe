@@ -15,12 +15,14 @@ export default function Game(): JSX.Element {
   const currentBoard: BoardType = playHistory[currentPlayHistoryIndex];
 
   function handlePlayHistory(latestBoard: BoardType): void {
-    const newPlayHistory: History = [
-      ...playHistory.slice(0, currentPlayHistoryIndex + 1),
-      latestBoard,
-    ];
-    setPlayHistory(newPlayHistory);
-    setCurrentPlayHistoryIndex(newPlayHistory.length - 1);
+    setPlayHistory((prevPlayHistory) => {
+      const newPlayHistory: History = [
+        ...prevPlayHistory.slice(0, currentPlayHistoryIndex + 1),
+        latestBoard,
+      ];
+      return newPlayHistory;
+    });
+    setCurrentPlayHistoryIndex((prevIndex) => prevIndex + 1);
   }
 
   return (
