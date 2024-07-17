@@ -1,27 +1,18 @@
-import { useState } from "react";
 import { ToggleOrderProps } from "../../../type";
 
 export function ToggleOrder({
   ascending,
   setAscending,
-  playHistory,
   setPlayHistory,
 }: ToggleOrderProps) {
-  const [order, setOrder] = useState<string>("手順:昇順");
-
   function handleOrder(): void {
-    const newOrder = !ascending;
-    setAscending(newOrder);
-
-    if (newOrder) {
-      setOrder("手順:昇順");
-    } else {
-      setOrder("手順:降順");
-    }
-
-    const newPlayHistory = playHistory.slice().reverse();
-    setPlayHistory(newPlayHistory);
+    setAscending((prevAscending) => !prevAscending);
+    setPlayHistory((prevPlayHistory) => prevPlayHistory.slice().reverse());
   }
 
-  return <button onClick={handleOrder}>{order}</button>;
+  return (
+    <button onClick={handleOrder}>
+      {ascending ? "手順:昇順" : "手順:降順"}
+    </button>
+  );
 }
