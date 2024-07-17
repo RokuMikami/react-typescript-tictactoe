@@ -29,16 +29,13 @@ export function Board({ xIsNext, board, onPlay }: BoardProps): JSX.Element {
             const isWinnersSquare =
               existWinner &&
               existWinner.some((elem) => elem[0] === i && elem[1] === j);
-            const squareStyle = isWinnersSquare
-              ? { backgroundColor: "pink" }
-              : {};
 
             return (
               <Square
                 key={keyIndex}
                 value={square}
                 onSquareClick={() => handleClick(i, j)}
-                style={squareStyle}
+                isWinner={isWinnersSquare}
               />
             );
           })}

@@ -1,7 +1,7 @@
 export interface SquareProps {
   value: string;
   onSquareClick: React.MouseEventHandler<HTMLButtonElement>;
-  style: React.CSSProperties;
+  isWinner: boolean|null;
 }
 
 export interface GameStatusProps {
