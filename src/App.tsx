@@ -12,6 +12,11 @@ export default function Game(): JSX.Element {
   const [currentPlayHistoryIndex, setCurrentPlayHistoryIndex] =
     useState<number>(0);
 
+  const jumpTo: (index: number) => void = useCallback(
+    (index: number) => setCurrentPlayHistoryIndex(index),
+    []
+  );
+
   const xIsNext: boolean = useMemo(
     () => currentPlayHistoryIndex % 2 === 0,
     [currentPlayHistoryIndex]
@@ -63,10 +68,7 @@ export default function Game(): JSX.Element {
         />
       </div>
       <div className="game-info">
-        <PlayHistory
-          history={playHistory}
-          jumpTo={setCurrentPlayHistoryIndex}
-        />
+        <PlayHistory history={playHistory} jumpTo={jumpTo} />
       </div>
     </div>
   );
