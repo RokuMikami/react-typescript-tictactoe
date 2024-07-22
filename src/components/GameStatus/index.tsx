@@ -1,26 +1,20 @@
-import { useMemo } from "react";
 import { GameStatusProps } from "../../type";
 
-export function GameStatus({
+export const GameStatus = function GameStatus({
   xIsNext,
   existWinner,
   isNullSquareExist,
 }: GameStatusProps): JSX.Element {
-  const gameStatus = useMemo(() => {
-    if (existWinner) {
-      return "Winner: " + (xIsNext ? "O" : "X");
-    } else {
-      if (isNullSquareExist) {
-        return "Next player: " + (xIsNext ? "X" : "O");
-      } else {
-        return "No Winner, No Loser";
-      }
-    }
-  }, [existWinner, xIsNext, isNullSquareExist]);
+  const winner: string = xIsNext ? "O" : "X";
+  const nextPlayer: string = xIsNext ? "X" : "O";
 
   return (
-    <>
-      <div className="gameStatus">{gameStatus}</div>
-    </>
+    <div className="gameStatus">
+      {existWinner
+        ? "Winner: " + winner
+        : isNullSquareExist
+          ? "Next player: " + nextPlayer
+          : "No Winner, No Loser"}
+    </div>
   );
-}
+};
