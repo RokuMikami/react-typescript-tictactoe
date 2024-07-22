@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { PlayHistoryProps } from "../../type";
 import { ToggleOrder } from "./components/ToggleOrder";
 
@@ -6,10 +6,9 @@ export function PlayHistory({
   history,
   jumpTo,
 }: PlayHistoryProps): JSX.Element {
-  const [playHistory, setPlayHistory] = useState<JSX.Element[]>([]);
   const [ascending, setAscending] = useState<boolean>(true);
 
-  useEffect(() => {
+  const playHistory = useMemo(() => {
     const newPlayHistory = history.map((_, i) => {
       let description;
       if (i === 0) {
@@ -27,7 +26,7 @@ export function PlayHistory({
       );
     });
 
-    setPlayHistory(ascending ? newPlayHistory : newPlayHistory.reverse());
+    return ascending ? newPlayHistory : newPlayHistory.reverse();
   }, [history, jumpTo, ascending]);
 
   return (

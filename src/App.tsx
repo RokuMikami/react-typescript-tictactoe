@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Board } from "./components/Board";
 import { GameStatus } from "./components/GameStatus";
 import { PlayHistory } from "./components/PlayHistory";
@@ -32,16 +32,19 @@ export default function Game(): JSX.Element {
     [currentBoard]
   );
 
-  function handlePlayHistory(latestBoard: BoardType): void {
-    setPlayHistory((prevPlayHistory) => {
-      const newPlayHistory: History = [
-        ...prevPlayHistory.slice(0, currentPlayHistoryIndex + 1),
-        latestBoard,
-      ];
-      return newPlayHistory;
-    });
-    setCurrentPlayHistoryIndex((prevIndex) => prevIndex + 1);
-  }
+  const handlePlayHistory = useCallback(
+    function handlePlayHistory(latestBoard: BoardType): void {
+      setPlayHistory((prevPlayHistory) => {
+        const newPlayHistory: History = [
+          ...prevPlayHistory.slice(0, currentPlayHistoryIndex + 1),
+          latestBoard,
+        ];
+        return newPlayHistory;
+      });
+      setCurrentPlayHistoryIndex((prevIndex) => prevIndex + 1);
+    },
+    [currentPlayHistoryIndex]
+  );
 
   return (
     <div className="game">
