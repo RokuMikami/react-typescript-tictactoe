@@ -3,7 +3,7 @@ import { Board } from "./components/Board";
 import { GameStatus } from "./components/GameStatus";
 import { PlayHistory } from "./components/PlayHistory";
 import type { History, BoardType } from "./type";
-import { calculateWinner } from "./model";
+import { calculateWinner, checkNullSquareExist } from "./model";
 
 export default function Game(): JSX.Element {
   const [playHistory, setPlayHistory] = useState<History>([
@@ -27,6 +27,11 @@ export default function Game(): JSX.Element {
     [currentBoard]
   );
 
+  const isNullSquareExist: boolean = useMemo(
+    () => checkNullSquareExist(currentBoard),
+    [currentBoard]
+  );
+
   function handlePlayHistory(latestBoard: BoardType): void {
     setPlayHistory((prevPlayHistory) => {
       const newPlayHistory: History = [
@@ -45,6 +50,7 @@ export default function Game(): JSX.Element {
           board={currentBoard}
           xIsNext={xIsNext}
           existWinner={existWinner}
+          isNullSquareExist={isNullSquareExist}
         />
         <Board
           xIsNext={xIsNext}

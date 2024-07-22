@@ -1,30 +1,22 @@
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { GameStatusProps } from "../../type";
-import { checkNullSquareExist } from "./model";
 
 export function GameStatus({
-  board,
   xIsNext,
   existWinner,
+  isNullSquareExist,
 }: GameStatusProps): JSX.Element {
-  const [gameStatus, setGameStatus] = useState<string>("");
-
-  useEffect(() => {
-    const newGameStatus = () => {
-      if (existWinner) {
-        return "Winner: " + board[existWinner[0][0]][existWinner[0][1]];
+  const gameStatus = useMemo(() => {
+    if (existWinner) {
+      return "Winner: " + (xIsNext ? "O" : "X");
+    } else {
+      if (isNullSquareExist) {
+        return "Next player: " + (xIsNext ? "X" : "O");
       } else {
-        const isNullSquareExist = checkNullSquareExist(board);
-        if (isNullSquareExist) {
-          return "Next player: " + (xIsNext ? "X" : "O");
-        } else {
-          return "No Winner, No Loser";
-        }
+        return "No Winner, No Loser";
       }
-    };
-
-    setGameStatus(newGameStatus());
-  }, [board, xIsNext, existWinner]);
+    }
+  }, [existWinner, xIsNext, isNullSquareExist]);
 
   return (
     <>

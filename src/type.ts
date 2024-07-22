@@ -8,11 +8,15 @@ export interface GameStatusProps {
   board: string[][];
   xIsNext: boolean;
   existWinner: number[][] | null;
+  isNullSquareExist: boolean;
 }
 
 export type BoardType = string[][];
 
-export interface BoardProps extends GameStatusProps {
+export interface BoardProps {
+  board: string[][];
+  xIsNext: boolean;
+  existWinner: number[][] | null;
   onPlay: (board: string[][]) => void;
 }
 
