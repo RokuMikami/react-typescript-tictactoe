@@ -16,7 +16,7 @@ export function PlayHistory({
       if (i === 0) {
         description = "Go to game start";
       } else if (i === history.length - 1) {
-        return <p>▶︎You're at move #{i}</p>;
+        return <p key={i}>▶︎You're at move #{i}</p>;
       } else {
         description = "Go to move #" + i;
       }
