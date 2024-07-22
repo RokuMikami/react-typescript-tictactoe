@@ -3,7 +3,7 @@ import { Board } from "./components/Board";
 import { GameStatus } from "./components/GameStatus";
 import { PlayHistory } from "./components/PlayHistory";
 import type { History, BoardType } from "./type";
-import { calculateWinner } from "./components/model";
+import { calculateWinner } from "./model";
 
 export default function Game(): JSX.Element {
   const [playHistory, setPlayHistory] = useState<History>([

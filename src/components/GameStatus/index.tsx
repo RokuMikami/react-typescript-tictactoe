@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { GameStatusProps } from "../../type";
-import { checkNullSquareExist } from "../../model";
+import { checkNullSquareExist } from "./model";
 
 export function GameStatus({
   board,
