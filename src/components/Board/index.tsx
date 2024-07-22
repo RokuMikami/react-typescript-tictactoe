@@ -1,10 +1,12 @@
 import { BoardProps } from "../../type";
 import { Square } from "./components/square";
-import { calculateWinner } from "../model";
 
-export function Board({ xIsNext, board, onPlay }: BoardProps): JSX.Element {
-  const existWinner: number[][] | null = calculateWinner(board);
-
+export function Board({
+  xIsNext,
+  board,
+  onPlay,
+  existWinner,
+}: BoardProps): JSX.Element {
   function handleClick(i: number, j: number): void {
     if (board[i][j] || existWinner) {
       return;
@@ -17,7 +19,7 @@ export function Board({ xIsNext, board, onPlay }: BoardProps): JSX.Element {
     }
     onPlay(newBoard);
   }
-  
+
   return (
     <>
       {board.map((_, i) => (

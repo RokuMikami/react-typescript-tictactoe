@@ -1,12 +1,13 @@
 export interface SquareProps {
   value: string;
   onSquareClick: React.MouseEventHandler<HTMLButtonElement>;
-  isWinner: boolean|null;
+  isWinner: boolean | null;
 }
 
 export interface GameStatusProps {
   board: string[][];
   xIsNext: boolean;
+  existWinner: number[][] | null;
 }
 
 export type BoardType = string[][];

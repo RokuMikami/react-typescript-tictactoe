@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { GameStatusProps } from "../../type";
-import { calculateWinner } from "../model";
-import { checkNullSquareExist } from "./model";
+import { checkNullSquareExist } from "../../model";
 
-export function GameStatus({ board, xIsNext }: GameStatusProps): JSX.Element {
-  const existWinner = calculateWinner(board);
+export function GameStatus({
+  board,
+  xIsNext,
+  existWinner,
+}: GameStatusProps): JSX.Element {
   const [gameStatus, setGameStatus] = useState<string>("");
 
   useEffect(() => {
