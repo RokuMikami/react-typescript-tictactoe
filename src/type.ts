@@ -29,5 +29,5 @@ export interface PlayHistoryProps {
 
 export interface ToggleOrderProps {
   ascending: boolean;
-  setAscending: React.Dispatch<React.SetStateAction<boolean>>;
+  changeOrder: React.Dispatch<React.SetStateAction<boolean>>;
 }

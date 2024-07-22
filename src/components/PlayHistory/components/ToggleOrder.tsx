@@ -2,10 +2,10 @@ import { ToggleOrderProps } from "../../../type";
 
 export function ToggleOrder({
   ascending,
-  setAscending,
+  changeOrder,
 }: ToggleOrderProps) {
   function handleOrder(): void {
-    setAscending((prevAscending) => !prevAscending);
+    changeOrder((prevAscending) => !prevAscending);
   }
 
   return (

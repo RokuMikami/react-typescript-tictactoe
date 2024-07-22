@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { GameStatusProps } from "../../type";
 
-export const GameStatus = function GameStatus({
+export const GameStatus = memo(function GameStatus({
   xIsNext,
   existWinner,
   isNullSquareExist,
@@ -17,4 +18,4 @@ export const GameStatus = function GameStatus({
           : "No Winner, No Loser"}
     </div>
   );
-};
+});
