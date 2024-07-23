@@ -1,26 +1,33 @@
 export interface SquareProps {
   value: string;
   onSquareClick: React.MouseEventHandler<HTMLButtonElement>;
-  style: React.CSSProperties;
+  isWinner: boolean | null;
 }
 
 export interface GameStatusProps {
   board: string[][];
   xIsNext: boolean;
+  existWinner: number[][] | null;
+  isNullSquareExist: boolean;
 }
 
-export interface BoardProps extends GameStatusProps {
+export type BoardType = string[][];
+
+export interface BoardProps {
+  board: string[][];
+  xIsNext: boolean;
+  existWinner: number[][] | null;
   onPlay: (board: string[][]) => void;
 }
 
+export type History = string[][][];
+
 export interface PlayHistoryProps {
-  history: string[][][];
+  history: History;
   jumpTo: (move: number) => void;
 }
 
 export interface ToggleOrderProps {
   ascending: boolean;
-  setAscending: React.Dispatch<React.SetStateAction<boolean>>;
-  playHistory: JSX.Element[];
-  setPlayHistory: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
+  changeOrder: React.Dispatch<React.SetStateAction<boolean>>;
 }

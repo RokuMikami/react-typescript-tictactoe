@@ -1,4 +1,4 @@
-import { BoardProps } from "../type";
+import { BoardProps } from "../../type";
 import { Square } from "./components/square";
 import { calculateWinner } from "../model";
 
