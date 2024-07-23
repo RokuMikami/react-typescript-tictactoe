@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { Board } from "./components/Board";
+import { GameStatus } from "./components/GameStatus";
+import { PlayHistory } from "./components/PlayHistory";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function Game(): JSX.Element {
+  const [playHistory, setPlayHistory] = useState<string[][][]>([
+    Array.from({ length: 3 }, () => Array(3).fill(null)),
+  ]);
+  const [currentPlayHistoryIndex, setCurrentPlayHistoryIndex] =
+    useState<number>(0);
+
+  const xIsNext: boolean = currentPlayHistoryIndex % 2 === 0;
+  const currentBoard: string[][] = playHistory[currentPlayHistoryIndex];
+
+  function handlePlayHistory(latestBoard: string[][]): void {
+    const newPlayHistory: string[][][] = [
+      ...playHistory.slice(0, currentPlayHistoryIndex + 1),
+      latestBoard,
+    ];
+    setPlayHistory(newPlayHistory);
+    setCurrentPlayHistoryIndex(newPlayHistory.length - 1);
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="game">
+      <div className="game-board">
+        <GameStatus board={currentBoard} xIsNext={xIsNext} />
+        <Board
+          xIsNext={xIsNext}
+          board={currentBoard}
+          onPlay={handlePlayHistory}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className="game-info">
+        <PlayHistory
+          history={playHistory}
+          jumpTo={setCurrentPlayHistoryIndex}
+        />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
-
-export default App
